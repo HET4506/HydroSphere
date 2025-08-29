@@ -1,25 +1,16 @@
-require('dotenv').config();
-const express = require('express');
-const bodyParser = require('body-parser');
-const sitesRouter = require('./routes/sites');
+import express from "express";
+import dotenv from "dotenv";
+import sitesRoutes from "./route/sites.js";
 
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(bodyParser.json());
+app.use(express.json());
 
-// health
-app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
-
-// sites routes
-app.use('/api/sites', sitesRouter);
-
-// global error handler
-app.use((err, req, res, next) => {
-  console.error(err.stack || err);
-  res.status(500).json({ error: err.message || 'Internal server error' });
-});
+// Routes
+app.use("/api/sites", sitesRoutes);
 
 app.listen(PORT, () => {
-  console.log(`GreenH2 backend running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
